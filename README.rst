@@ -18,7 +18,10 @@ Supports
 
 django-bstrap-modals has been tested with:
 
-* Django 2.1.2 using Python 3.6, 3.7
+* Django 2.1.3 using Python 3.7
+
+Due to the fact that it is a few templates and some Javascript, testing is
+currently manual, it likely works in other versions.
 
 Docs & Source
 =============
