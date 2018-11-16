@@ -1,6 +1,6 @@
 import os
 
-from awl import __version__
+from bsmodals import __version__
 
 readme = os.path.join(os.path.dirname(__file__), 'README.rst')
 long_description = open(readme).read()
@@ -29,7 +29,7 @@ SETUP_ARGS = dict(
     ],
     keywords='django,bootstrap,modal',
     install_requires=[
-        'Django>=2.1',
+        'Django>=2.1.3',
     ],
 )
 

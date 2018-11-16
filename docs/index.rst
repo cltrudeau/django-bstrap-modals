@@ -5,8 +5,10 @@ Version: |version|
 Methods
 =======
 
-.. automodule:: bsmodals
-    :members:
+.. toctree::
+    :maxdepth: 2
+
+    bsmodals
 
 Indices and tables
 ==================

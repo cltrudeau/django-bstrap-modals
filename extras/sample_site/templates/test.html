@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Test Bootstrap Modals</h1>
+<div class="row align-self-center">
+  <div class="col">
+    <button id="do-alert" type="button" class="btn btn-primary">Alert</button>
+    <button id="do-error" type="button" class="btn btn-primary">Error</button>
+    <button id="do-confirm" type="button" class="btn btn-primary"
+      >Confirm</button>
+    <button id="do-mydialog" type="button" class="btn btn-primary"
+      >My Dialog</button>
+  </div>
+</div>
+
+{% include "bsmodals/alert.html" %}
+{% include "bsmodals/error.html" %}
+{% include "bsmodals/confirm.html" %}
+{% include "mydialog.html" with bsmodals_dialog_id="mydialog"%}
+{% endblock content %}
+
+
+{% block body_script %}
+<script>
+$(document).ready(function() {
+
+  $('#do-alert').click( function() {
+    bsmodals_alert('Alert Title', 'This is an alert');
+  });
+
+  $('#do-error').click( function() {
+    bsmodals_error('This is an error');
+  });
+
+  $('#do-confirm').click( function() {
+    bsmodals_confirm('Confirm Title', 'Choose Yes or No', function(result) {
+      if( result ) {
+        console.debug('User chose Yes');
+      }
+      else {
+        console.debug('User chose No');
+      }
+    });
+  });
+
+  $('#do-mydialog').click( function() {
+    bsmodals_dialog('mydialog', 
+      [['#mydialog-title', 'My Dialog Title'], ['#message', 'Foo and bar']], 
+      [['#name', 'John Doe'], ['#number', 'val3']],
+    );
+  });
+
+});
+</script>
+{% endblock body_script %}

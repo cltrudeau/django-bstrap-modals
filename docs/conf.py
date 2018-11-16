@@ -66,7 +66,8 @@ project = 'Django Bootstrap 4 Modals'
 
 from datetime import datetime
 author = 'Christopher Trudeau'
-copyright = '2018, %s' % (datetime.now().year, author)
+#copyright = '2015-%s, %s' % (datetime.now().year, author)
+copyright = '2018, %s' % author
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

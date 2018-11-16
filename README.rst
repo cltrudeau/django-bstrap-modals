@@ -13,6 +13,9 @@ Installation
 
     $ pip install django-bstrap-modals
 
+Include ``bsmodals`` in your ``INSTALLED_APPS`` and make sure that your
+``APP_DIRS`` setting inside of the ``TEMPLATES`` list is set to ``True``.
+
 Supports
 ========
 

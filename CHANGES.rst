@@ -1,4 +1,4 @@
 0.1
 ===
 
-* initial commit to pypi
+* initial release to pypi
