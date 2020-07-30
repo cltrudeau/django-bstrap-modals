@@ -1,5 +1,11 @@
-1.0
-===
+1.0.1
+=====
+
+* Fix bug where form and general dialog buttons were being registered multiple
+times
+
+1.0.0
+=====
 
 * Add ability to have multiple confirmation boxes
 * Add ajax form dialogs and tools

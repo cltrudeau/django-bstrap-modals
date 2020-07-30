@@ -177,15 +177,16 @@ quickly fill in parts of the dialog.
     :param string dialog_id: 
         The id to use for your custom dialog, the helper function will search
         for this id to populate items in the dialog
+
     :param object text:
-        A dictionary mapping element ids to text content.  Each element within
-        the dialog that has the id given in the key (without the "#") has
+        Optional dictionary mapping a CSS selector to text content.  Each
+        element within the dialog that matches the selector in a key has
         ``.text(value)`` called on it. This allows you to quickly populate
         paragraphs, textareas or any other HTML with children
 
     :param object values:
-        A dictionary mapping element ids to content.  Each element within the
-        dialog that has the id given in the key (without the "#") has 
+        Optional dictionary mapping a CSS selector to content.  Each element
+        within the dialog that matches the selector in a key has
         ``.val(value)`` called on it. This allows you to quickly populate
         input tags inside of the dialog box.
 
@@ -195,8 +196,8 @@ Example:
 
 .. code-block:: javascript
 
-    bsmodals_dialog('mydialog', {'mydialog-title':'Replacement Title'},
-        {'name':'Joe Smith'});
+    bsmodals_dialog('mydialog', {'#mydialog-title':'Replacement Title'},
+        {'[name="name"]':'Joe Smith'});
 
     $('#mydialog-action').click(function() {
         console.debug('Somebody used MyDialog!');
@@ -290,16 +291,21 @@ launch the dialog.
         Optional function to be called when the server responds to the post.
         Callback takes a parameter containing the JSON response.
     :param object text:
-        Optional dictionary mapping element ids to text content.  Each element
-        within the dialog that has the id given in the key (without the "#")
-        has ``.text(value)`` called on it. This allows you to quickly populate
+        Optional dictionary mapping a CSS selector to text content.  Each
+        element within the dialog that matches the selector in a key has
+        ``.text(value)`` called on it. This allows you to quickly populate
         paragraphs, textareas or any other HTML with children
+
     :param object values:
-        Optional dictionary mapping element ids to content.  Each element within the
-        dialog that has the id given in the key (without the "#") has 
+        Optional dictionary mapping a CSS selector to content.  Each element
+        within the dialog that matches the selector in a key has
         ``.val(value)`` called on it. This allows you to quickly populate
         input tags inside of the dialog box.
+
     :param bool clear_on_success:
+        Optional value that when false stops the values in the form being
+        cleared after a successful submission. Defaults to true.
+
 
 The Python ``handle_form()`` helper function can be used to validate the form
 and properly construct the JSON needed to be passed back to the form dialog.

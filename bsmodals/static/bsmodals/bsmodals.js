@@ -17,6 +17,8 @@ function bsmodals_alert(title, msg, style="btn-primary") {
     modal.modal();
 }
 
+var bound = [];
+
 
 function bsmodals_confirm(dialog_id, title, msg, callback, yes_text="Yes",
         yes_style="btn-primary", no_text="No", no_style="btn-secondary") {
@@ -31,15 +33,18 @@ function bsmodals_confirm(dialog_id, title, msg, callback, yes_text="Yes",
 
     // register call backs on Yes/No buttons
     var button = modal.find('#' + dialog_id + '-yes')
-    button.click(function() {
-        callback(true);
-        modal.modal('hide');
-    });
-    button = modal.find('#' + dialog_id + '-no')
-    button.click(function() {
-        callback(false);
-        modal.modal('hide');
-    });
+    if( !bound.includes(dialog_id) ) {
+        bound.push(dialog_id);
+        button.click(function() {
+            callback(true);
+            modal.modal('hide');
+        });
+        button = modal.find('#' + dialog_id + '-no')
+        button.click(function() {
+            callback(false);
+            modal.modal('hide');
+        });
+    }
 
     // show dialog
     modal.modal();
@@ -50,11 +55,11 @@ function bsmodals_dialog(dialog_id, text, values) {
     var modal = $('#' + dialog_id);
 
     $.each(text, function(key, value) {
-        modal.find('#' + key).text(value);
+        modal.find(key).text(value);
     });
 
-    $.each(text, function(key, value) {
-        modal.find('#' + key).val(value);
+    $.each(values, function(key, value) {
+        modal.find(key).val(value);
     });
 
     modal.modal();
@@ -98,52 +103,56 @@ function bsmodals_form(dialog_id, post_url, callback=undefined, text={},
     var modal = $('#' + dialog_id);
 
     $.each(text, function(key, value) {
-        modal.find('#' + key).text(value);
+        modal.find(key).text(value);
     });
 
     $.each(values, function(key, value) {
-        modal.find('#' + key).val(value);
+        modal.find(key).val(value);
     });
 
-    $('#' + dialog_id + '-submit').on('click', (function(e) {
-        e.preventDefault();
-        var data  = _bsmodals_form_values(modal);
+    if( !bound.includes(dialog_id) ) {
+        bound.push(dialog_id);
 
-        $.post(post_url, data, function(response) {
-            modal.find('.is-invalid').each(function() {
-                $(this).removeClass('is-invalid');
-            });
+        $('#' + dialog_id + '-submit').on('click', (function(e) {
+            e.preventDefault();
+            var data  = _bsmodals_form_values(modal);
 
-            if( response['success'] ) {
-                modal.modal('hide');
+            $.post(post_url, data, function(response) {
+                modal.find('.is-invalid').each(function() {
+                    $(this).removeClass('is-invalid');
+                });
 
-                if( clear_on_success ) {
-                    modal.find('form')[0].reset();
+                if( response['success'] ) {
+                    modal.modal('hide');
+
+                    if( clear_on_success ) {
+                        modal.find('form')[0].reset();
+                    }
+                }
+                else {
+                    var item;
+                    $.each(response['errors'], 
+                        function(key, value) {
+                            item = modal.find('[name="' + key + '"]').each(
+                                function(){
+                                    // have to do this multiple times because of
+                                    // radio buttons
+                                    $(this).addClass('is-invalid');
+                                    $(this).siblings('.invalid-feedback').text(
+                                        value);
+                                });
+                    });
                 }
 
-            }
-            else {
-                var item;
-                $.each(response['errors'], function(key, value) {
-                    item = modal.find('[name="' + key + '"]').each(function(){
-                        // have to do this multiple times because of radio
-                        // buttons
-                        $(this).addClass('is-invalid');
-                        $(this).siblings('.invalid-feedback').text(value);
-                    });
-                });
-            }
-
-            if( callback != undefined ) {
-                callback(response);
-            }
-        }, 'json')
-        .fail(function() { 
-            console.log("JSON call posting form data failed");
-        });
-    }));
-
-
+                if( callback != undefined ) {
+                    callback(response);
+                }
+            }, 'json')
+            .fail(function() { 
+                console.log("JSON call posting form data failed");
+            });
+        }));
+    }
 
     modal.modal();
 }

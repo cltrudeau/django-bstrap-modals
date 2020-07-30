@@ -75,12 +75,12 @@ $(document).ready(function() {
 
   $('#do-mydialog').click( function() {
     var text = {
-        'mydialog-title':'My Dialog Title', 
-        'message':'Foo and bar', 
+        '#mydialog-title':'My Dialog Title', 
+        '#message':'Foo and bar', 
     }
     var values = {
-      'name':'John Doe', 
-      'number':'val3',
+      '#name':'John Doe', 
+      '#number':'val3',
     }
     bsmodals_dialog('mydialog', text, values);
   });
@@ -89,8 +89,8 @@ $(document).ready(function() {
     bsmodals_form('myform', '/ajax_form/', callback=function(response) {
       console.log('Form response was:', response);
 
- // uncomment and remove }); after it to test clear on success 
- // }, text={}, values={}, clear_on_success=false);
+     // uncomment and remove }); after it to test clear on success 
+     //}, text={}, values={'[name="name"]':'Bob'}, clear_on_success=false);
     });
   });
 
