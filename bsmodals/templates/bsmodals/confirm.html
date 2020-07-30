@@ -1,22 +1,26 @@
-<div class="modal fade" id="bsmodals-confirm" tabindex="-1" role="dialog"
+<div class="modal fade" id="{{dialog_id}}" tabindex="-1" role="dialog"
+    {% if no_click_off %} data-backdrop="static" {% endif %}
     aria-labelledby="bsmodals-confirm-title" aria-hidden="true">
   <div class="modal-dialog {% if not not_centered %}modal-dialog-centered{% endif %}" 
       role="document">
     <div class="modal-content">
 
       <div class="modal-header">
-        <h5 class="modal-title" id="bsmodals-confirm-title"></h5>
+        <h5 class="modal-title" id="{{dialog_id}}-title"></h5>
       </div>
 
       <div class="modal-body">
-        <p id="bsmodals-confirm-body"></p>
+        <p id="{{dialog_id}}-body"></p>
       </div>
 
       <div class="modal-footer">
-        <button id="bsmodals-confirm-no" type="button" 
-          class="btn btn-secondary" >No</button>
-        <button id="bsmodals-confirm-yes" type="button" 
-          class="bsmodals-confirm-btn btn btn-primary" >Yes</button>
+        <button id="{{dialog_id}}-no" type="button" 
+          class="btn {% if no_button_style %}{{no_button_style}}{% else %}btn-primary{% endif %}" 
+          class="btn btn-secondary"
+          >{% if no_button_text %}{{no_button_text}}{% else %}No{% endif %}</button>
+        <button id="{{dialog_id}}-yes" type="button" 
+          class="btn {% if yes_button_style %}{{yes_button_style}}{% else %}btn-primary{% endif %}" 
+          >{% if yes_button_text %}{{yes_button_text}}{% else %}Yes{% endif %}</button>
       </div>
 
     </div>

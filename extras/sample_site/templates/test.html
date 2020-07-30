@@ -4,19 +4,27 @@
 <h1>Test Bootstrap Modals</h1>
 <div class="row align-self-center">
   <div class="col">
-    <button id="do-alert" type="button" class="btn btn-primary">Alert</button>
-    <button id="do-error" type="button" class="btn btn-primary">Error</button>
-    <button id="do-confirm" type="button" class="btn btn-primary"
-      >Confirm</button>
+    <button id="do-alert1" type="button" class="btn btn-primary">Alert</button>
+    <button id="do-alert2" type="button" class="btn btn-primary">Alert Info</button>
+    <button id="do-error1" type="button" class="btn btn-primary">Error</button>
+    <button id="do-error2" type="button" class="btn btn-primary">Error Warning</button>
+    <button id="do-confirm1" type="button" class="btn btn-primary"
+      >Confirm 1</button>
+    <button id="do-confirm2" type="button" class="btn btn-primary"
+      >Confirm 2</button>
     <button id="do-mydialog" type="button" class="btn btn-primary"
       >My Dialog</button>
+    <button id="do-form" type="button" class="btn btn-primary"
+      >My Form</button>
   </div>
 </div>
 
-{% include "bsmodals/alert.html" %}
-{% include "bsmodals/error.html" %}
-{% include "bsmodals/confirm.html" %}
-{% include "mydialog.html" with bsmodals_dialog_id="mydialog"%}
+{% include "bsmodals/alert.html" with no_click_off=True%}
+{% include "bsmodals/error.html" with no_click_off=True%}
+{% include "bsmodals/confirm.html" with dialog_id="conf1" no_click_off=True%}
+{% include "bsmodals/confirm.html" with dialog_id="conf2" no_click_off=True%}
+{% include "mydialog.html" with dialog_id="mydialog" title="My Dialog"%}
+{% include "form.html" with dialog_id="myform" title="Sample Form" modal_size="modal-lg" no_click_off=True%}
 {% endblock content %}
 
 
@@ -24,16 +32,25 @@
 <script>
 $(document).ready(function() {
 
-  $('#do-alert').click( function() {
+  $('#do-alert1').click( function() {
     bsmodals_alert('Alert Title', 'This is an alert');
   });
 
-  $('#do-error').click( function() {
+  $('#do-alert2').click( function() {
+    bsmodals_alert('Aquamarine Alert', 'Another alert', style="btn-info");
+  });
+
+  $('#do-error1').click( function() {
     bsmodals_error('This is an error');
   });
 
-  $('#do-confirm').click( function() {
-    bsmodals_confirm('Confirm Title', 'Choose Yes or No', function(result) {
+  $('#do-error2').click( function() {
+    bsmodals_error('A different error', style="btn-warning");
+  });
+
+  $('#do-confirm1').click( function() {
+    bsmodals_confirm('conf1', 'Confirm Title', 'Choose Yes or No', 
+        function(result) {
       if( result ) {
         console.debug('User chose Yes');
       }
@@ -43,11 +60,38 @@ $(document).ready(function() {
     });
   });
 
+  $('#do-confirm2').click( function() {
+    bsmodals_confirm('conf2', 'Serious Question', 'Choose Red or Green', 
+        function(result) {
+      if( result ) {
+        console.debug('User chose Red');
+      }
+      else {
+        console.debug('User chose Green');
+      }
+    }, yes_text="Red", yes_style="btn-danger", no_text="Green", 
+      no_style="btn-info");
+  });
+
   $('#do-mydialog').click( function() {
-    bsmodals_dialog('mydialog', 
-      [['#mydialog-title', 'My Dialog Title'], ['#message', 'Foo and bar']], 
-      [['#name', 'John Doe'], ['#number', 'val3']],
-    );
+    var text = {
+        'mydialog-title':'My Dialog Title', 
+        'message':'Foo and bar', 
+    }
+    var values = {
+      'name':'John Doe', 
+      'number':'val3',
+    }
+    bsmodals_dialog('mydialog', text, values);
+  });
+
+  $('#do-form').click( function() {
+    bsmodals_form('myform', '/ajax_form/', callback=function(response) {
+      console.log('Form response was:', response);
+
+ // uncomment and remove }); after it to test clear on success 
+ // }, text={}, values={}, clear_on_success=false);
+    });
   });
 
 });

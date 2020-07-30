@@ -1,4 +1,5 @@
 <div class="modal fade" id="bsmodals-error" tabindex="-1" role="dialog"
+    {% if no_click_off %} data-backdrop="static" {% endif %}
     aria-labelledby="bsmodals-error-title" aria-hidden="true">
   <div class="modal-dialog {% if not not_centered %}modal-dialog-centered{% endif %}" 
       role="document">
@@ -17,8 +18,8 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal"
-            >Close</button>
+        <button id="bsmodals-error-close" type="button" data-dismiss="modal"
+          >Close</button>
       </div>
 
     </div>

@@ -7,12 +7,6 @@
 
       <div class="modal-header">
         <h5 id="{{dialog_id}}-title">{{title}}</h5>
-        {% if not hide_cancel %}
-          <button type="button" class="close" data-dismiss="modal"
-              aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        {% endif %}
       </div>
 
       <div class="modal-body">
@@ -21,8 +15,12 @@
       </div>
 
       <div class="modal-footer">
-        {% block footer %}
-        {% endblock footer %}
+        <button id="{{dialog_id}}-submit" type="button" 
+          class="btn {% if submit_button_style %}{{submit_button_style}}{% else %}btn-primary{% endif %}" 
+            >{% if submit_button_text %}{{submit_button_text}}{% else %}Submit{% endif %}</button>
+        <button type="button" data-dismiss="modal"
+          class="btn {% if cancel_button_style %}{{cancel_button_style}}{% else %}btn-secondary{% endif %}" 
+            >{% if cancel_button_text %}{{cancel_button_text}}{% else %}Cancel{% endif %}</button>
       </div>
 
     </div>
