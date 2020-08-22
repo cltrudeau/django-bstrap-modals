@@ -1,1 +1,2 @@
 -e ../../../django-bstrap-modals
+djangorestframework==3.11.1

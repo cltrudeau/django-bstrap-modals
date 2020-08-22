@@ -1,7 +1,7 @@
 function bsmodals_error(msg, style="btn-primary") {
     // displays the error modal box with the given message
     var modal = $('#bsmodals-error');
-    modal.find('#bsmodals-error-body').text(msg);
+    modal.find('#bsmodals-error-body').html(msg);
     modal.find('#bsmodals-error-close').attr('class', 'btn ' + style);
     modal.modal();
 }
@@ -10,8 +10,8 @@ function bsmodals_error(msg, style="btn-primary") {
 function bsmodals_alert(title, msg, style="btn-primary") {
     // displays the alert modal box with the given title and message
     var modal = $('#bsmodals-alert');
-    modal.find('#bsmodals-alert-title').text(title);
-    modal.find('#bsmodals-alert-body').text(msg);
+    modal.find('#bsmodals-alert-title').html(title);
+    modal.find('#bsmodals-alert-body').html(msg);
     modal.find('#bsmodals-alert-close').attr('class', 'btn ' + style);
 
     modal.modal();
@@ -24,12 +24,12 @@ function bsmodals_confirm(dialog_id, title, msg, callback, yes_text="Yes",
         yes_style="btn-primary", no_text="No", no_style="btn-secondary") {
     // displays the confirm modal box with the given title and message
     var modal = $('#' + dialog_id);
-    modal.find('#' + dialog_id + '-title').text(title);
-    modal.find('#' + dialog_id + '-body').text(msg);
+    modal.find('#' + dialog_id + '-title').html(title);
+    modal.find('#' + dialog_id + '-body').html(msg);
     modal.find('#' + dialog_id + '-yes').attr('class', 'btn ' + yes_style);
-    modal.find('#' + dialog_id + '-yes').text(yes_text);
+    modal.find('#' + dialog_id + '-yes').html(yes_text);
     modal.find('#' + dialog_id + '-no').attr('class', 'btn ' + no_style);
-    modal.find('#' + dialog_id + '-no').text(no_text);
+    modal.find('#' + dialog_id + '-no').html(no_text);
 
     // register call backs on Yes/No buttons
     var button = modal.find('#' + dialog_id + '-yes')

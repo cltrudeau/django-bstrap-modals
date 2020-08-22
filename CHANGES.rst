@@ -1,3 +1,9 @@
+1.1.1
+=====
+
+* Change .text() calls to .html() calls so confirm, alert and error dialogs
+can be populated with HTML
+
 1.1.0
 =====
 

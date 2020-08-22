@@ -39,11 +39,11 @@
 $(document).ready(function() {
 
   $('#do-alert1').click( function() {
-    bsmodals_alert('Alert Title', 'This is an alert');
+    bsmodals_alert('Alert Title', 'This is an <b>alert</b>');
   });
 
   $('#do-alert2').click( function() {
-    bsmodals_alert('Aquamarine Alert', 'Another alert', style="btn-info");
+    bsmodals_alert('Aquamarine Alert', 'Another <b>alert</b>', style="btn-info");
   });
 
   $('#do-error1').click( function() {
@@ -51,11 +51,11 @@ $(document).ready(function() {
   });
 
   $('#do-error2').click( function() {
-    bsmodals_error('A different error', style="btn-warning");
+    bsmodals_error('A different <b>error</b>', style="btn-warning");
   });
 
   $('#do-confirm1').click( function() {
-    bsmodals_confirm('conf1', 'Confirm Title', 'Choose Yes or No', 
+    bsmodals_confirm('conf1', 'Confirm Title', 'Choose <b>Yes</b> or No', 
         function(result) {
       if( result ) {
         console.debug('User chose Yes');
@@ -67,7 +67,7 @@ $(document).ready(function() {
   });
 
   $('#do-confirm2').click( function() {
-    bsmodals_confirm('conf2', 'Serious Question', 'Choose Red or Green', 
+    bsmodals_confirm('conf2', 'Serious Question', 'Choose <b>Red</b> or Green', 
         function(result) {
       if( result ) {
         console.debug('User chose Red');
