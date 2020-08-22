@@ -3,6 +3,10 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework import viewsets
+
+from app.models import Author, AuthorSerializer
+
 from bsmodals import handle_form
 
 # Create your views here.
@@ -42,3 +46,20 @@ def ajax_form(request):
     print('Handled form:', result, data)
 
     return JsonResponse(data)
+
+
+class AuthorViewSet(viewsets.ModelViewSet):
+    serializer_class = AuthorSerializer
+    queryset = Author.objects.all()
+
+    def create(self, request):
+        #import pudb; pudb.set_trace()
+        print('*** data', request.data);
+
+        try:
+            response = super().create(request)
+            print('   response', response)
+        except Exception as e:
+            print('!!!', e)
+            raise
+        return response

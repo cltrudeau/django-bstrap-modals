@@ -321,6 +321,50 @@ and properly construct the JSON needed to be passed back to the form dialog.
         JsonResponse object
 
 
+Rest Forms
+----------
+
+In addition to the form function calls, you can also use the ``RestModal``
+object from inside ``/static/bsmodals/restapi.js``. The object uses the same
+base ``form.html`` template, but instead of working with a Django view, it is
+based on REST API calls. 
+
+.. py:function:: RestModal(dialog_id)
+
+    :param string dialog_id: 
+        The id to use for your custom dialog, the class will search
+        for this id to populate items in the dialog
+
+
+.. py:function:: RestModal.show_create(url, data, callback)
+
+    Displays the dialog corresponding to the class and on submission calls the
+    REST API POST method on the given URL to create the object. Similar to
+    ``bsmodal_form``, errors are displayed using the ``is-invalid`` class
+    attribute and corresponding ``invalid-feedback`` classes if present.
+
+    :param url: URL of the REST POST call used to create objects represented
+                by the form
+    :param data: object whose key/value pairs are used to populate the form.
+                 Like ``bsmodal_form``, the keys are used to find matching
+                 tags with "name" attributes in the form. The method
+                 automatically determines what kind of tag it is in the form
+                 to populate it properly.
+    :param callback: optional method to call after the POST has succeeded
+
+
+.. py:function:: RestModal.show_update(url, data, callback)
+
+    Displays the dialog corresponding to the class and on submission calls the
+    REST API PUT method on the given URL to update the object in question.
+    Note that this URL must be for a single specific object. 
+
+    :param url: URL for the REST API PUT call
+    :param data: data used to populate the form, using "name" attributes
+                 corresponding to the keys in the object
+    :param callback: optional method to call on success
+
+
 Extra Parameters
 ================
 

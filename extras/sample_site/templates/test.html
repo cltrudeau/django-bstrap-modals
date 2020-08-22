@@ -4,6 +4,7 @@
 <h1>Test Bootstrap Modals</h1>
 <div class="row align-self-center">
   <div class="col">
+    <a href="/api/" target="_blank">api</a>
     <button id="do-alert1" type="button" class="btn btn-primary">Alert</button>
     <button id="do-alert2" type="button" class="btn btn-primary">Alert Info</button>
     <button id="do-error1" type="button" class="btn btn-primary">Error</button>
@@ -16,6 +17,10 @@
       >My Dialog</button>
     <button id="do-form" type="button" class="btn btn-primary"
       >My Form</button>
+    <button id="do-rest-create" type="button" class="btn btn-primary"
+      >Rest Create</button>
+    <button id="do-rest-update" type="button" class="btn btn-primary"
+      >Rest Update</button>
   </div>
 </div>
 
@@ -25,6 +30,7 @@
 {% include "bsmodals/confirm.html" with dialog_id="conf2" no_click_off=True%}
 {% include "mydialog.html" with dialog_id="mydialog" title="My Dialog"%}
 {% include "form.html" with dialog_id="myform" title="Sample Form" modal_size="modal-lg" no_click_off=True%}
+{% include "author.html" with dialog_id="author" title="Author" modal_size="modal-lg" no_click_off=True%}
 {% endblock content %}
 
 
@@ -91,6 +97,29 @@ $(document).ready(function() {
 
      // uncomment and remove }); after it to test clear on success 
      //}, text={}, values={'[name="name"]':'Bob'}, clear_on_success=false);
+    });
+  });
+
+  var author_form = new RestModal('author');
+
+  $('#do-rest-create').click( function() {
+    var data = {
+      'name':'DefaultName',
+      'description':'Default description',
+    }
+    author_form.show_create('/api/authors/', data, function(response) {
+      bsmodals_alert('Created Author', 'It is done');
+    });
+  });
+
+  $('#do-rest-update').click( function() {
+    var data = {
+      'name':'Bob Bobbly 2',
+      'description':'More bob stuff',
+      'rating':'B',
+    }
+    author_form.show_update('/api/authors/1/', data, function(response) {
+      bsmodals_alert('Updated Author', 'It is also done');
     });
   });
 
