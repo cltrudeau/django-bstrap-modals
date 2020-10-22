@@ -5,24 +5,35 @@ Django Bootstrap Modals 4
 This library wraps some Bootstrap 4 Modal dialog boxes as templates and
 provides some simple Javascript to help render them.
 
+#####
 Setup
-=====
+#####
 
-Javascript helper functions are provided, to use them you will need to source
-them into your HTML page.
+The library is broken into two parts, one for general dialogs and the other
+for a dialog that deals with REST API calls. Both sets require you to include
+the base library:
 
 .. code-block:: html
 
     <script src="/static/bsmodals/bsmodals/js"></script>
 
-Four different dialog boxes are provided, one of which needs to be extended to
-use, the others are self contained. 
+If you want to use the REST API you also have to include:
 
-Dialogs
-=======
+.. code-block:: html
+
+    <script src="/static/bsmodals/restapi/js"></script>
+
+Additionally, dependingo on what dialogs you are using you will need to do a
+template ``include`` of either the supplied templates or your overwrittten
+version. See each dialog type below for specifics.
+
+
+################
+Built-in Dialogs
+################
 
 Alert Dialog
-------------
+============
 
 The alert dialog provides a simple pop-up with a button to clear it. It is
 used by including the ``alert`` template:
@@ -49,7 +60,7 @@ Example:
 
 
 Error Dialog
-------------
+============
 
 The error dialog provides a simple pop-up with a button to clear it. It is
 used by including the ``error`` template:
@@ -75,22 +86,20 @@ Example:
 
 
 Confirm Dialog
---------------
+==============
 
-The confirm dialog provides a pop-up with a "Yes" and "No" button. A copy of
-this should be included for each dialog you wish to create. Each dialog must
-have a unique id number, included using the ``with`` parameter in the
-``include`` tag:
+The confirm dialog provides a pop-up with a "Yes" and "No" button. It should
+only be included once.
 
 .. code-block:: django
 
-    {% include "bsmodals/confirm.html" with dialog_id="my_confirm"%}
+    {% include "bsmodals/confirm.html" %}
 
-You can use the Javascript helper function to show the dialog
+You can use the Javascript helper function to show the dialog, changing the
+parameter on each call.
 
-.. js:function:: bsmodals_confirm(dialog_id, title, msg, callback, [yes_text="Yes", yes_style="btn-primary", no_text="No", no_style="btn-secondary"])
+.. js:function:: bsmodals_confirm(title, msg, callback, [yes_text="Yes", yes_style="btn-primary", no_text="No", no_style="btn-secondary"])
 
-    :param string dialog_id: Unique ID to give the dialog
     :param string title: Title for the dialog
     :param string msg: Message contained in the dialog box
     :param callback: Callback function that takes a boolean, receives
@@ -106,7 +115,7 @@ Example:
 
 .. code-block:: javascript
 
-    bsmodals_confirm('my_conf', 'Delete World', 
+    bsmodals_confirm('Delete World', 
         'Are you sure you want to delete the world', function(result) {
             if(result) {
                 console.debug('User is despondent');
@@ -121,7 +130,7 @@ results in the unusual formatting of your code:
 
 .. code-block:: javascript
 
-    bsmodals_confirm('other_conf', 'Chicken Type', 
+    bsmodals_confirm('Chicken Type', 
         'What kind of chicken do you want?', function(result) {
             if(result) {
                 console.debug('They said Regular');
@@ -133,12 +142,57 @@ results in the unusual formatting of your code:
         no_style='btn-danger');
 
 
+##############
 Custom Dialogs
---------------
+##############
 
-In addition to the the built-in dialogs, this library provides a way of
-quickly creating your own. This is done by creating your own template and
-extending the ``generic`` one provided.
+Custom dialogs are instantiated through a class and inherit from
+``FormDialog``. To use a custom dialog you will need to include a template
+that extends a base template and then instantiate the class. 
+
+The ``form`` tag within your extending template is expected to use the
+``name`` attribute on your ``input``, ``select``, and ``textarea`` tags.
+Methods are provided on the object for getting and setting the values of these
+tags. The ``set_errors`` method will put your tags into error mode, setting
+their ``class`` attribute to ``is-invalid`` and populating any nearby 
+``<div class="invalid-feedback">`` tags.
+
+Base class methods:
+
+.. js:function:: FormDialog.set_data(data)
+
+    Sets the contents of your your ``input``, ``select``, and ``textarea``
+    tags. Your tags must have the ``name`` attribute set corresponding to the
+    keys in the data. The method correctly determines the use of ``.val()`` or
+    ``.text()`` based on the tag type.
+
+    :param object data: 
+        Key/value pairs specifying the ``name`` and content of your tags.
+
+
+.. js:function:: FormDialog.get_data()
+
+    Returns an object with key/value pairs corresponding to the contents of
+    your form tags.
+
+
+.. js:function:: FormDialog.set_errors(errors)
+
+    Changes your ``input``, ``select``, and ``textarea`` tags to be in the
+    ``is-invalid`` state. If corresponding ``<div class="invalid-feedback">``
+    tags are nearby also sets their content to the error message.
+
+    :param object errors: 
+        Key/value pairs specifying the ``name`` and error message of any tags
+        that are in error state.
+
+FormModal
+=========
+
+This class is for creating a dialog with a form inside. Use it by extending
+the ``generic`` template and filling the blocks with your ``form``.
+
+Example:
 
 .. code-block:: django
 
@@ -169,49 +223,52 @@ parameter of the ``include`` tag to set the dialog's id.
 
     {% include "mydialog" with dialog_id="mydialog" %}
 
-Once your template is in place you can use the Javascript helper function to
-quickly fill in parts of the dialog.
+Once your template is in place, use the ``FormModal`` class to create an
+object, then call the ``show`` method to display the dialog.
 
-.. js:function:: bsmodals_dialog(dialog_id, text, values)
+.. code-block:: javascript
+
+    var my_dialog = new FormModal('mydialog');
+    $('#mydialog-action').click(function() {
+        console.debug('Somebody used MyDialog!');
+    });
+
+    var data = {
+        'full_name':'Joe Smith'
+    }
+
+    my_dialog.show(data);
+
+In the above example, the form element with the name attribute ``full_name``
+is found and set to *Joe Smith* and the dialog is displayed. Note that
+the ``generic`` template does not include buttons in the dialog, so you will
+need to include these yourself and bind to them. The base template does
+include a block named ``footer`` that can be extended.
+
+Class Definition:
+-----------------
+
+.. js:function:: FormModal(dialog_id)
 
     :param string dialog_id: 
         The id to use for your custom dialog, the helper function will search
         for this id to populate items in the dialog
 
-    :param object text:
-        Optional dictionary mapping a CSS selector to text content.  Each
-        element within the dialog that matches the selector in a key has
-        ``.text(value)`` called on it. This allows you to quickly populate
-        paragraphs, textareas or any other HTML with children
+.. js:function:: FormModal.show(data)
 
-    :param object values:
-        Optional dictionary mapping a CSS selector to content.  Each element
-        within the dialog that matches the selector in a key has
-        ``.val(value)`` called on it. This allows you to quickly populate
-        input tags inside of the dialog box.
-
-Don't forget to set any event handlers on buttons you may put in the footer.
-
-Example:
-
-.. code-block:: javascript
-
-    bsmodals_dialog('mydialog', {'#mydialog-title':'Replacement Title'},
-        {'[name="name"]':'Joe Smith'});
-
-    $('#mydialog-action').click(function() {
-        console.debug('Somebody used MyDialog!');
-    });
+    :param object data: 
+        Key/value pairs in the object specify the contents of the ``form`` in
+        the dialog box. ``Form`` tags such as ``input``, ``select`` and
+        ``textarea`` must have a ``name`` attribute corresponding to the key
+        in the object. 
 
 
-Custom Forms
-------------
+AJAX Form
+=========
 
-Similar to the custom dialog mechanism is a custom form one. Forms are
-automatically submitted to a URL via an AJAX post. Form elements should use
-a ``name`` attribute that matches the expectation of the form field name in
-the Django view. If your form includes ``invalid-feedback`` divs, the method
-will automatically set their content on any errors in the form.
+The ``AJAXModal`` class does everything the ``FormModal`` class does as well
+as submitting content values to a URL via ``$.post``. A Django utility method 
+is provided for managing the submission of the form in the Django view.
 
 Sample view:
 
@@ -264,7 +321,12 @@ And the javascript:
 
 .. code-block:: javascript
 
-    bsmodals_form('myform', '/ajax_form_view/', function(response) {
+    var my_form = new AJAXForm('myform');
+    var initial = {
+        'age':42,
+    }
+
+    my_form.show('/ajax_form_view', data, function(response) {
         if( response['success'] ) {
             console.log('Post succeeded. Dialog will now close');
         }
@@ -276,36 +338,34 @@ And the javascript:
         }
     });
 
-Once all the code and your template is set up, use the Javascript function to
-launch the dialog.
+Class Definition
+----------------
 
-.. js:function:: bsmodals_form(dialog_id, post_url, [callback=undefined, text={}, values={}, clear_on_success=true])
+.. js:function:: AJAXForm(dialog_id)
+
+    Constructs an object corresponding to an included Django template that
+    extends ``form``.
 
     :param string dialog_id: 
-        The id to use for your custom dialog, the helper function will search
-        for this id to populate items in the dialog
-    :param string post_url:
+        The id to use for your custom dialog.
+    
+.. js:function:: AJAXForm.show(url, data, [callback=undefined, clear_on_success=true])
+
+    :param string url:
         URL that the ajax POST is made to for form submission. Expects a JSON
         response, use the ``handle_form()`` helper method to generate it.
+    :param object data:
+        Key/value pairs to pre-populate the form with, uses the ``set_data()``
+        method to populate the form.
     :param function callback:
         Optional function to be called when the server responds to the post.
         Callback takes a parameter containing the JSON response.
-    :param object text:
-        Optional dictionary mapping a CSS selector to text content.  Each
-        element within the dialog that matches the selector in a key has
-        ``.text(value)`` called on it. This allows you to quickly populate
-        paragraphs, textareas or any other HTML with children
-
-    :param object values:
-        Optional dictionary mapping a CSS selector to content.  Each element
-        within the dialog that matches the selector in a key has
-        ``.val(value)`` called on it. This allows you to quickly populate
-        input tags inside of the dialog box.
-
     :param bool clear_on_success:
         Optional value that when false stops the values in the form being
         cleared after a successful submission. Defaults to true.
 
+Server Side Helper
+------------------
 
 The Python ``handle_form()`` helper function can be used to validate the form
 and properly construct the JSON needed to be passed back to the form dialog.
@@ -313,21 +373,20 @@ and properly construct the JSON needed to be passed back to the form dialog.
 .. py:function:: bsmodals.handle_form(form)
 
     :param form: 
-        Form to be processed. Form field names should correspond to the
+        Django form to be processed. Form field names should correspond to the
         ``name`` attributes of the fields in the HTML form.
 
     :returns:
         Tuple containing a boolean result and a dictionary to pass back via a
         JsonResponse object
 
-
 Rest Forms
-----------
+==========
 
-In addition to the form function calls, you can also use the ``RestModal``
-object from inside ``/static/bsmodals/restapi.js``. The object uses the same
-base ``form.html`` template, but instead of working with a Django view, it is
-based on REST API calls. 
+The ``RestModal`` class does everything the ``FormModal`` class does as well
+as providing methods for creating and updating objects using REST API URLs. To
+use the ``RestModal`` object you will need to include both the ``bsmodals.js``
+and ``restapi.js`` Javascript files in your HTML.
 
 .. py:function:: RestModal(dialog_id)
 
@@ -339,17 +398,12 @@ based on REST API calls.
 .. py:function:: RestModal.show_create(url, data, callback)
 
     Displays the dialog corresponding to the class and on submission calls the
-    REST API POST method on the given URL to create the object. Similar to
-    ``bsmodal_form``, errors are displayed using the ``is-invalid`` class
-    attribute and corresponding ``invalid-feedback`` classes if present.
+    REST API POST method on the given URL to create the object. 
 
     :param url: URL of the REST POST call used to create objects represented
                 by the form
     :param data: object whose key/value pairs are used to populate the form.
-                 Like ``bsmodal_form``, the keys are used to find matching
-                 tags with "name" attributes in the form. The method
-                 automatically determines what kind of tag it is in the form
-                 to populate it properly.
+                 Uses the inherited ``set_data()`` method.
     :param callback: optional method to call after the POST has succeeded
 
 
@@ -360,13 +414,28 @@ based on REST API calls.
     Note that this URL must be for a single specific object. 
 
     :param url: URL for the REST API PUT call
-    :param data: data used to populate the form, using "name" attributes
-                 corresponding to the keys in the object
+    :param data: object whose key/value pairs are used to populate the form.
+                 Uses the inherited ``set_data()`` method.
     :param callback: optional method to call on success
 
 
+.. py:function:: RestModal.show_patch(url, data, callback)
+
+    Displays the dialog corresponding to the class and on submission calls the
+    REST API PATCH method on the given URL to do a partial update on the object 
+    in question.  Note that this URL must be for a single specific object. 
+
+    :param url: URL for the REST API PUT call
+    :param data: object whose key/value pairs are used to populate the form.
+                 Uses the inherited ``set_data()`` method.
+    :param callback: optional method to call on success
+
+
+.. _extra_parms:
+
+################
 Extra Parameters
-================
+################
 
 Additional parameters can be set to change dialog behaviour. These parameters
 are set using the ``with`` parameter of the ``include`` tag.
@@ -379,39 +448,46 @@ not_centered
 
 no_click_off
     If true, turns off the closing of a dialog when clicking outside of it.
-    Bootstrap calls this "static backdrop".
+    Bootstrap calls this "static backdrop". Parameter is ignored with the 
+    ``confirm`` dialog.
 
-modal_size (Generic and Form dialogs only)
+modal_size (``generic`` and ``form`` dialogs only)
     Alternate bootstrap dialog size specifier. Use things like ``modal-lg``
     or ``modal-xl`` to add sizing info to the dialog.
 
-title (Generic and Form dialogs only)
+title (``generic`` and ``form`` dialogs only)
     Specify the title for the dialogs.
 
-hide_cancel (Generic dialogs only)
+hide_cancel (``generic`` dialogs only)
     Setting ``hide_cancel`` to ``True`` will prevent the ``X`` appearing in
     the top corner of the dialog box that closes the dialog.
 
 
+###############
 Styling Dialogs
-===============
+###############
 
-Alert dialogs are ``id="bsmodals-alert"`` and error dialogs 
-``id="bsmodals-error"``.
+To provide additionaly styling to the base dialogs, their ids are as follows:
 
-Confirm dialogs have the id passed in when created. The children of the modal
-dialog have have the dialog id as a prefix on their ids. The title is
-``"{{dialog_id}}-title"`` and the body paragraph is ``"{{dialog_id}}-body"``.
-The "yes" and "no" buttons are ``"{{dialog_id}}-yes"`` and
-``"{{dialog_id}}-no"``, respetively.
+* Alert: ``id="bsmodals-alert"``
+* Error: ``id="bsmodals-error"``
+* Confirm: ``id="bsmodals-confirm"``
 
-The form and generic dialogs have ``id="{{dialog_id}}-title"`` on the ``<h5>``
-used as a title.
+The custom dialogs all define a body ``block`` for the contents of your form.
+The title is inside an ``h5`` tag with the id ``{{dialog_id}}-title``.
 
-Examples
-========
+The ``generic`` template defines a ``footer`` block that can be extended which
+is the ideal place for your dialog buttons.
+
+Thee ``form`` template contains two buttons: ``{{dialog_id}}-submit`` and
+``{{dialog_id}}-cancel`` for form submission and cancelling, respectively. See
+the section on :ref:`extra_parms` for other variables you can adjust.
+
+
+############
+Example Site
+############
 
 An example web-site is available with the source code:
 
 Source: https://github.com/cltrudeau/django-bstrap-modals/tree/master/extras/sample_site
-

@@ -7,6 +7,9 @@ class Author(models.Model):
     description = models.TextField()
     rating = models.CharField(max_length=2)
 
+    def __str__(self):
+        return f'Author({self.name}, {self.id})'
+
 
 class AuthorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

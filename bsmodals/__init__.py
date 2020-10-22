@@ -1,4 +1,4 @@
-__version__ = '1.1.1'
+__version__ = '2.1.0'
 
 def handle_form(form):
     data = {}

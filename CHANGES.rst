@@ -1,3 +1,23 @@
+2.1
+===
+
+* Add PATCH capability to RestModal
+
+2.0.1
+=====
+
+* Bug fix with pre-populating <textarea> tags
+
+2.0
+===
+
+* BREAKING CHANGES!
+* bsmodals_confirm is now a single re-used dialog to be included once
+* bsmodal_form and bsmodal_dialog have been replaced with FormModal and
+AJAXModal objects
+* all custom dialogs now inherit from the same base class, so tag naming
+conventions are now consistent
+
 1.1.1
 =====
 

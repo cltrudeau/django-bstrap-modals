@@ -21,16 +21,20 @@
       >Rest Create</button>
     <button id="do-rest-update" type="button" class="btn btn-primary"
       >Rest Update</button>
+    <button id="do-rest-patch" type="button" class="btn btn-primary"
+      >Rest Patch</button>
   </div>
 </div>
 
 {% include "bsmodals/alert.html" with no_click_off=True%}
 {% include "bsmodals/error.html" with no_click_off=True%}
-{% include "bsmodals/confirm.html" with dialog_id="conf1" no_click_off=True%}
-{% include "bsmodals/confirm.html" with dialog_id="conf2" no_click_off=True%}
+{% include "bsmodals/confirm.html" %}
+
 {% include "mydialog.html" with dialog_id="mydialog" title="My Dialog"%}
 {% include "form.html" with dialog_id="myform" title="Sample Form" modal_size="modal-lg" no_click_off=True%}
 {% include "author.html" with dialog_id="author" title="Author" modal_size="modal-lg" no_click_off=True%}
+{% include "pauthor.html" with dialog_id="partial-author" title="Partial Author" modal_size="modal-lg" no_click_off=True%}
+
 {% endblock content %}
 
 
@@ -55,49 +59,52 @@ $(document).ready(function() {
   });
 
   $('#do-confirm1').click( function() {
-    bsmodals_confirm('conf1', 'Confirm Title', 'Choose <b>Yes</b> or No', 
-        function(result) {
+    bsmodals_confirm('Confirm Title', 'Choose <b>Yes</b> or No', (result)=>{
       if( result ) {
         console.debug('User chose Yes');
-      }
-      else {
+      } else {
         console.debug('User chose No');
       }
     });
   });
 
   $('#do-confirm2').click( function() {
-    bsmodals_confirm('conf2', 'Serious Question', 'Choose <b>Red</b> or Green', 
-        function(result) {
+    bsmodals_confirm('Serious Question', 'Choose <b>Red</b> or Green', (result)=>{
       if( result ) {
         console.debug('User chose Red');
       }
       else {
         console.debug('User chose Green');
       }
-    }, yes_text="Red", yes_style="btn-danger", no_text="Green", 
-      no_style="btn-info");
+    }, yes_text="Red", yes_style="btn-danger", no_text="Green", no_style="btn-info");
   });
 
+  var mydialog = new FormModal('mydialog');
   $('#do-mydialog').click( function() {
-    var text = {
+    var data = {
         '#mydialog-title':'My Dialog Title', 
         '#message':'Foo and bar', 
+        '#name':'John Doe', 
+        '#number':'val3',
     }
-    var values = {
-      '#name':'John Doe', 
-      '#number':'val3',
-    }
-    bsmodals_dialog('mydialog', text, values);
+    mydialog.show(data);
   });
 
+  var myform = new AJAXModal('myform');
   $('#do-form').click( function() {
-    bsmodals_form('myform', '/ajax_form/', callback=function(response) {
-      console.log('Form response was:', response);
+    var data = {}
+    var clear_on_success = true;
 
-     // uncomment and remove }); after it to test clear on success 
-     //}, text={}, values={'[name="name"]':'Bob'}, clear_on_success=false);
-    });
+    // uncomment to test with clear on success and data prepop
+    data = {
+      'name':'Bob',
+      message:'This is a message',
+    }
+    clear_on_success=false;
+
+    myform.show('/ajax_form/', data, (response)=>{
+      console.log('Form response was:', response);
+    }, clear_on_success);
   });
 
   var author_form = new RestModal('author');
@@ -120,6 +127,17 @@ $(document).ready(function() {
     }
     author_form.show_update('/api/authors/1/', data, function(response) {
       bsmodals_alert('Updated Author', 'It is also done');
+    });
+  });
+
+  var paritial_author_form = new RestModal('partial-author');
+
+  $('#do-rest-patch').click( function() {
+    var data = {
+      'name':'Bob Bobbly Patched',
+    }
+    paritial_author_form.show_patch('/api/authors/1/', data, (response)=>{
+      bsmodals_alert('Patched Author', 'It is also done');
     });
   });
 
