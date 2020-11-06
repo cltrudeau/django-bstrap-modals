@@ -15,13 +15,13 @@ the base library:
 
 .. code-block:: html
 
-    <script src="/static/bsmodals/bsmodals/js"></script>
+    <script src="/static/bsmodals/bsmodals.js"></script>
 
 If you want to use the REST API you also have to include:
 
 .. code-block:: html
 
-    <script src="/static/bsmodals/restapi/js"></script>
+    <script src="/static/bsmodals/restapi.js"></script>
 
 Additionally, dependingo on what dialogs you are using you will need to do a
 template ``include`` of either the supplied templates or your overwrittten
