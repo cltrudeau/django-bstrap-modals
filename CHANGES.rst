@@ -1,3 +1,9 @@
+2.1.2
+=====
+
+* More fixes for default behaviour of dialog on form submission via pressing
+enter
+
 2.1.1
 =====
 

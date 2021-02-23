@@ -10,7 +10,14 @@ class RestModal extends FormDialog {
 
         var _this = this;
 
-        $('#' + dialog_id + '-submit').on('click', function(e) {
+        var form = $('#' + this.dialog_id).find("form");
+        var click_id = 'click.' + this.dialog_id;
+        var button = this.modal.find('#' + this.dialog_id + '-submit')
+        button.off(click_id).on(click_id, (e)=>{
+            form.submit();
+        });
+
+        form.submit(function(e) {
             e.preventDefault();
             var data = _this.get_data();
 

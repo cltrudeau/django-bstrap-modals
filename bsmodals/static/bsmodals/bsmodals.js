@@ -143,12 +143,17 @@ class AJAXModal extends FormDialog {
     show(url, data, callback=undefined, clear_on_success=true) {
         var _this = this;
         this.set_data(data);
+        var form = $('#' + this.dialog_id).find("form");
 
         var click_id = 'click.' + this.dialog_id;
         var button = this.modal.find('#' + this.dialog_id + '-submit')
         button.off(click_id).on(click_id, (e)=>{
+            form.submit();
+        });
+
+        form.submit(function(e) {
             e.preventDefault();
-            var post_data  = this.get_data();
+            var post_data  = _this.get_data();
 
             $.post(url, post_data, (response)=>{
                 _this.modal.find('.is-invalid').each(function() {
