@@ -15,12 +15,12 @@
       </div>
 
       <div class="modal-footer">
-        <button id="{{dialog_id}}-submit" type="button" 
-          class="btn {% if submit_button_style %}{{submit_button_style}}{% else %}btn-primary{% endif %}" 
-            >{% if submit_button_text %}{{submit_button_text}}{% else %}Submit{% endif %}</button>
         <button type="button" data-dismiss="modal"
           class="btn {% if cancel_button_style %}{{cancel_button_style}}{% else %}btn-secondary{% endif %}" 
             >{% if cancel_button_text %}{{cancel_button_text}}{% else %}Cancel{% endif %}</button>
+        <button id="{{dialog_id}}-submit" type="submit" 
+          class="btn {% if submit_button_style %}{{submit_button_style}}{% else %}btn-primary{% endif %}" 
+            >{% if submit_button_text %}{{submit_button_text}}{% else %}Submit{% endif %}</button>
       </div>
 
     </div>

@@ -1,3 +1,10 @@
+2.1.1
+=====
+
+* Change base form Submit button type to be of type submit and to be after the
+Cancel button so that browsers that allow enter for form submission aren't
+confused
+
 2.1
 ===
 
