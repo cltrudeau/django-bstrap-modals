@@ -6,7 +6,7 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <h5>Error</h5>
+        <h5>{% if error_title_text %}{{error_title_text}}{% else %}Error{% endif %}</h5>
         <button type="button" class="close" data-dismiss="modal"
             aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -19,7 +19,7 @@
 
       <div class="modal-footer">
         <button id="bsmodals-error-close" type="button" data-dismiss="modal"
-          >Close</button>
+          >{% if close_button_text %}{{close_button_text}}{% else %}Close{% endif %}</button>
       </div>
 
     </div>

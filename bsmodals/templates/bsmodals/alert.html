@@ -19,7 +19,7 @@
 
       <div class="modal-footer">
         <button id="bsmodals-alert-close" type="button" data-dismiss="modal"
-          >Close</button>
+          >{% if close_button_text %}{{close_button_text}}{% else %}Close{% endif %}</button>
       </div>
 
     </div>

@@ -15,9 +15,10 @@
 
       <div class="modal-footer">
         <button id="bsmodals-confirm-no" type="button" class="btn btn-secondary"
-          >No</button>
+          >{% if no_button_text %}{{no_button_text}}{% else %}No{% endif %}</button>
         <button id="bsmodals-confirm-yes" type="button" 
-          class="btn btn-primary">Yes</button>
+            class="btn btn-primary"
+          >{% if yes_button_text %}{{yes_button_text}}{% else %}Yes{% endif %}</button>
       </div>
     </div>
   </div>

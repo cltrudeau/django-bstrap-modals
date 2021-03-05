@@ -1,3 +1,13 @@
+2.2.1
+=====
+
+* Documentation update
+
+2.2
+===
+
+* Replaced hard coded English text with overridable Django variables
+
 2.1.2
 =====
 

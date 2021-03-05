@@ -58,6 +58,10 @@ Example:
 
     bsmodals_alert('Warning!', 'Will Robinson, you are in Danger!');
 
+The text on the button that closes the dialog is "Close" by default. This can
+be changed by overridding ``close_button_text`` through the ``with`` parameter
+to the ``include`` tag.
+
 
 Error Dialog
 ============
@@ -84,6 +88,10 @@ Example:
 
     bsmodals_error('The sky is falling!', "btn-warning");
 
+The text on the button that closes the dialog and the title are "Close" and
+"Error", respectively, but can be customized.  Override ``close_button_text``
+or ``error_title_text`` through the ``with`` parameter in the ``include`` tag
+to change these values.
 
 Confirm Dialog
 ==============
@@ -141,6 +149,10 @@ results in the unusual formatting of your code:
         }, yes_text='Regular', yes_style='btn-dark', no_text='Extra Crispy',
         no_style='btn-danger');
 
+In addition to being able to specify the "Yes" and "No" button text through
+the Javascript call, you can also override the template by changing 
+``yes_button_text`` and ``no_button_text`` through the ``with`` parameter
+in the ``include`` tag.
 
 ##############
 Custom Dialogs
