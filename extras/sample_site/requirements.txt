@@ -1,2 +1,3 @@
 -e ../../../django-bstrap-modals
+django-awl==1.5.0
 djangorestframework==3.11.1
