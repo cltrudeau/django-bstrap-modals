@@ -1,6 +1,6 @@
 # These requirements are for the sample_site and generating docs. The library
 # itself only needs a subset, see setup.py for that list
-Django==3.0.8
+Django==2.2.18
 Sphinx==3.1.2
 sphinx-rtd-theme==0.5.0
 twine==3.2.0
