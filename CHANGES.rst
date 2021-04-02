@@ -1,3 +1,10 @@
+2.3
+===
+
+* Added clear_errors() and hide() to the base form class
+* Added handling of data keys beginning with "#" to look for ids in set_data()
+method
+
 2.2.1
 =====
 

@@ -68,15 +68,34 @@ class FormDialog {
     set_data(data) {
         var _this = this;
         $.each(data, function(key, value) {
-            _this.modal.find('[name="' + key + '"]').each(function(){
-                if($(this).is('input') || $(this).is('select')) {
+            if( key[0] == '#' ) {
+                _this.modal.find(key).each(function() {
+                    if($(this).is('input') || $(this).is('select')
+                            || $(this).is('textarea')) {
+                        $(this).val(value);
+                    }
+                    else {
+                        $(this).html(value);
+                    }
+                });
+            }
+            else {
+                _this.modal.find('[name="' + key + '"]').each(function(){
                     $(this).val(value);
-                }
-                else if($(this).is('textarea')) {
-                    $(this).val(value);
-                }
-            });
+                });
+            }
+
         });
+    }
+
+    clear_errors() {
+        this.modal.find('.is-invalid').each(function() {
+            $(this).removeClass('is-invalid');
+        });
+    }
+
+    hide() {
+        this.modal.modal('hide');
     }
 
     get_data() {

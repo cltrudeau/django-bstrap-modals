@@ -173,10 +173,14 @@ Base class methods:
 
 .. js:function:: FormDialog.set_data(data)
 
-    Sets the contents of your your ``input``, ``select``, and ``textarea``
-    tags. Your tags must have the ``name`` attribute set corresponding to the
-    keys in the data. The method correctly determines the use of ``.val()`` or
-    ``.text()`` based on the tag type.
+    Sets the contents of your tags based on key/value pairs in the data
+    dictionary passed in. Keys that begin with "#" are assumed to be ids,
+    if the corresponding tag is ``input``, ``select``, or ``textarea`` then
+    the ``.val()`` method is called with the value in the data dict. If the
+    tag is not one of those, then ``.html()`` is called with the value.
+
+    If the key does not begin with a "#", it is assumed to be the key for a
+    "name" property. The corresponding tag has ``.val()`` called on it.
 
     :param object data: 
         Key/value pairs specifying the ``name`` and content of your tags.
@@ -197,6 +201,16 @@ Base class methods:
     :param object errors: 
         Key/value pairs specifying the ``name`` and error message of any tags
         that are in error state.
+
+.. js:function:: FormDialog.clear_errors()
+
+    Removes any ``is-invalid`` states from any of the tags in the form.
+
+
+.. js:function:: FormDialog.hide()
+
+    Hides the form. Useful for when using custom callbacks on button pushes.
+
 
 FormModal
 =========

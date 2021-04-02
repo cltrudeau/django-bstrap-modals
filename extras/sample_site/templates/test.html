@@ -2,9 +2,10 @@
 
 {% block content %}
 <h1>Test Bootstrap Modals</h1>
+
+<div class="alert alert-dark">Canned Dialogs</div>
 <div class="row align-self-center">
-  <div class="col">
-    <a href="/api/" target="_blank">api</a>
+  <div class="col offset-1">
     <button id="do-alert1" type="button" class="btn btn-primary">Alert</button>
     <button id="do-alert2" type="button" class="btn btn-primary">Alert Info</button>
     <button id="do-error1" type="button" class="btn btn-primary">Error</button>
@@ -13,10 +14,32 @@
       >Confirm 1</button>
     <button id="do-confirm2" type="button" class="btn btn-primary"
       >Confirm 2</button>
+  </div>
+</div>
+<br/>
+
+<div class="alert alert-dark">Forms and AJAX Dialogs</div>
+<div class="row align-self-center">
+  <div class="col offset-1">
     <button id="do-mydialog" type="button" class="btn btn-primary"
       >My Dialog</button>
+
+    <button id="do-mydialog-errors" type="button" class="btn btn-primary"
+      >My Dialog Set Errors</button>
+
+    <button id="do-mydialog-clear" type="button" class="btn btn-primary"
+      >My Dialog Clear Errors</button>
+
     <button id="do-form" type="button" class="btn btn-primary"
       >AJAX Modal</button>
+  </div>
+</div>
+<br/>
+
+<div class="alert alert-dark">REST Dialogs</div>
+<div class="row align-self-center">
+  <div class="col offset-1">
+    <a href="/api/" target="_blank">api</a>
     <button id="do-rest-create" type="button" class="btn btn-primary"
       >Rest Create</button>
     <button id="do-rest-update" type="button" class="btn btn-primary"
@@ -41,6 +64,8 @@
 {% block body_script %}
 <script>
 $(document).ready(function() {
+
+  // --- Canned Dialogs
 
   $('#do-alert1').click( function() {
     bsmodals_alert('Alert Title', 'This is an <b>alert</b>');
@@ -79,15 +104,31 @@ $(document).ready(function() {
     }, yes_text="Red", yes_style="btn-danger", no_text="Green", no_style="btn-info");
   });
 
+  // --- Forms and AJAX Dialogs
+
   var mydialog = new FormModal('mydialog');
   $('#do-mydialog').click( function() {
     var data = {
         '#mydialog-title':'My Dialog Title', 
-        '#message':'Foo and bar', 
-        '#name':'John Doe', 
-        '#number':'val3',
+        'message':'Foo and bar', 
+        'name':'John Doe', 
+        'number':'val3',
     }
     mydialog.show(data);
+  });
+
+  $('#do-mydialog-errors').click( function() {
+    mydialog.set_errors({'name':['Required field']});
+    mydialog.show({});
+  });
+
+  $('#do-mydialog-clear').click( function() {
+    mydialog.clear_errors();
+    mydialog.show({});
+  });
+
+  $('#mydialog-close').click( function() {
+    mydialog.hide();
   });
 
   var myform = new AJAXModal('myform');
@@ -106,6 +147,8 @@ $(document).ready(function() {
       console.log('Form response was:', response);
     }, clear_on_success);
   });
+
+  // --- REST Dialogs
 
   var author_form = new RestModal('author');
 
