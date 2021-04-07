@@ -1,0 +1,32 @@
+<div class="modal fade" id="bsmodals-entry" tabindex="-1" role="dialog"
+    data-backdrop="static" aria-labelledby="bsmodals-entry-title" 
+    aria-hidden="true">
+  <div class="modal-dialog {% if not not_centered %}modal-dialog-centered{% endif %}" 
+      role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="bsmodals-entry-title"></h5>
+      </div>
+
+      <div class="modal-body">
+        <p id="bsmodals-entry-body"></p>
+
+        <form>
+          <div class="form-group">
+            <input id="bsmodals-entry-field" type="text" class="form-control">
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button id="bsmodals-entry-cancel" type="button" data-dismiss="modal"
+          class="btn btn-secondary"
+          >{% if cancel_button_text %}{{cancel_button_text}}{% else %}Cancel{% endif %}</button>
+        <button id="bsmodals-entry-submit" type="button" 
+            class="btn btn-primary"
+          >{% if submit_button_text %}{{submit_button_text}}{% else %}Submit{% endif %}</button>
+      </div>
+    </div>
+  </div>
+</div>

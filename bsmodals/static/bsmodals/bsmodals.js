@@ -47,6 +47,32 @@ function bsmodals_confirm(title, msg, callback, yes_text="Yes",
     modal.modal();
 }
 
+
+function bsmodals_entry(title, msg, callback, submit_text="Submit",
+        submit_style="btn-primary", cancel_text="Cancel", 
+        cancel_style="btn-secondary") {
+    // displays the entry modal box with the given title and message
+    var modal = $('#bsmodals-entry');
+    modal.find('#bsmodals-entry-title').html(title);
+    modal.find('#bsmodals-entry-body').html(msg);
+    modal.find('#bsmodals-entry-submit').attr('class', 'btn ' + submit_style);
+    modal.find('#bsmodals-entry-submit').html(submit_text);
+    modal.find('#bsmodals-entry-cancel').attr('class', 'btn ' + cancel_style);
+    modal.find('#bsmodals-entry-cancel').html(cancel_text);
+
+    // register call backs on Submit buttons
+    var click_id = 'click.bsmodals-entry';
+    var button = modal.find('#bsmodals-entry-submit')
+    button.off(click_id).on(click_id, ()=>{
+        modal.modal('hide');
+        var value = $('#bsmodals-entry-field').val();
+        callback(value);
+    });
+
+    // show dialog
+    modal.modal();
+}
+
 // -------------------------------------------------------------------------
 // Form Dialogs
 

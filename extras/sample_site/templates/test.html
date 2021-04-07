@@ -14,6 +14,8 @@
       >Confirm 1</button>
     <button id="do-confirm2" type="button" class="btn btn-primary"
       >Confirm 2</button>
+    <button id="do-entry" type="button" class="btn btn-primary"
+      >Entry</button>
   </div>
 </div>
 <br/>
@@ -52,6 +54,7 @@
 {% include "bsmodals/alert.html" with no_click_off=True%}
 {% include "bsmodals/error.html" with no_click_off=True%}
 {% include "bsmodals/confirm.html" %}
+{% include "bsmodals/entry.html" %}
 
 {% include "mydialog.html" with dialog_id="mydialog" title="My Dialog"%}
 {% include "form.html" with dialog_id="myform" title="Sample Form" modal_size="modal-lg" no_click_off=True%}
@@ -102,6 +105,13 @@ $(document).ready(function() {
         console.debug('User chose Green');
       }
     }, yes_text="Red", yes_style="btn-danger", no_text="Green", no_style="btn-info");
+  });
+
+  $('#do-entry').click( function() {
+      bsmodals_entry('Tell me something', 'Type a thing', (result)=>{
+          alert("User typed " + result);
+      }, submit_text="Special Submit", submit_style="btn-danger", 
+        cancel_text="Special Cancel", cancel_style="btn-info");
   });
 
   // --- Forms and AJAX Dialogs

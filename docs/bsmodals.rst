@@ -117,7 +117,7 @@ parameter on each call.
         "btn-primary"
     :param string no_text: Optional text to use instead of "No" on the no button
     :param string no_style: Optional style for the no button, defaults to
-        "btn-primary"
+        "btn-secondary"
 
 Example:
 
@@ -153,6 +153,49 @@ In addition to being able to specify the "Yes" and "No" button text through
 the Javascript call, you can also override the template by changing 
 ``yes_button_text`` and ``no_button_text`` through the ``with`` parameter
 in the ``include`` tag.
+
+Entry Dialog
+============
+
+The entry dialog provides a pop-up with a form containing a single text entry.
+Callers to the function register a callback that returns the value for the
+field.  It should only be included once.
+
+.. code-block:: django
+
+    {% include "bsmodals/entry.html" %}
+
+You can use the Javascript helper function to show the dialog, changing the
+parameter on each call.
+
+.. js:function:: bsmodals_entry(title, msg, callback, [submit_text="Submit", submit_style="btn-primary", cancel_text="Cancel", cancel_style="btn-secondary"])
+
+    :param string title: Title for the dialog
+    :param string msg: Message contained in the dialog box
+    :param callback: Callback function that takes a string value, the contents
+        of the field if the user presses the Submit button
+    :param string submit_text: Optional text to use instead of "Submit" on the 
+        Submit button
+    :param string submit_style: Optional style for the Submit button, defaults 
+        to "btn-primary"
+    :param string cancel_text: Optional text to use instead of "Cancel" on the 
+        Cancel button
+    :param string cancel_style: Optional style for the Cancel button, defaults 
+        to "btn-secondary"
+
+Example:
+
+.. code-block:: javascript
+
+    bsmodals_entry('Your Name?', 
+        'What would you like to be called?', function(value) {
+            console.debug('User says to call them ' + value );
+        });
+
+In addition to being able to specify the "Submit" and "Cancel" button text 
+through the Javascript call, you can also override the template by changing 
+``submit_button_text`` and ``cancel_button_text`` through the ``with`` 
+parameter in the ``include`` tag.
 
 ##############
 Custom Dialogs

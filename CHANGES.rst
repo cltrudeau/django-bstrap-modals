@@ -1,3 +1,8 @@
+2.4
+===
+
+* Added bsmodals_entry() a quick way of getting a single piece of text
+
 2.3
 ===
 
