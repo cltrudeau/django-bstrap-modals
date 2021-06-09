@@ -1,3 +1,3 @@
 # These requirements are for the sample_site and generating docs. The library
 # itself only needs a subset, see setup.py for that list
-Django==2.2.19
+Django==2.2.22
